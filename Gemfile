@@ -28,13 +28,17 @@ gem "jbuilder", "~> 2.7"
 # Reduces boot times through caching; required in config/boot.rb
 gem "active_model_serializers", "~> 0.10.0"
 gem "bootsnap", ">= 1.4.4", require: false
+gem "devise"
 gem "devise_token_auth"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
+  gem "factory_bot_rails" # 追加
+  gem "faker" # 追加
   gem "pry-byebug" # 追加
   gem "pry-doc" # 追加
   gem "pry-rails" # 追加
+  gem "rspec-rails" # 追加
   gem "rubocop-rails" # 追加
   gem "rubocop-rspec" # 追加
 end
