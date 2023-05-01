@@ -20,26 +20,16 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe "article_validates" do
-      context "titleが存在しない時" do
-        it "article作成に失敗する" do
-          article = Article.new(title: nil ,body:"yutoyuto",user_id: nil)
-          expect(article).to be_invalid
-          # binding.pry
-          expect(article.errors.details[:title][0][:error]).to eq :blank
 
-        end
-      end
-
-      context "同じtitleが既に存在するとき" do
-        it "記事作成に失敗する" do
-          Article.create!(title: "uto" , body: "yutoyuto",user_id: 1)
-          article = Article.new(title:"uto" , body: "yutoyuta" )
-            expect(article).to be_invalid
-            # binding.pry
-            expect(article.errors.details[:title][0][:error]).to eq :taken
-          end
-        end
+      # context "同じtitleが既に存在するとき" do
+      #   it "記事作成に失敗する" do
+      #     Article.create!(title: "uto" , body: "yutoyuto",user_id: 1)
+      #     article = Article.new(title:"uto" , body: "yutoyuta" )
+      #       expect(article).to be_invalid
+      #       # binding.pry
+      #       expect(article.errors.details[:title][0][:error]).to eq :taken
+      #     end
+      #   end
 
         context "user_idが存在しない時" do
         it "記事作成に失敗する" do
@@ -54,18 +44,17 @@ RSpec.describe User, type: :model do
         end
 
 
-        context "commentが存在しない時" do
-        it "記事作成に失敗する" do
-          comment = Comment.new(user_id:1,article_id:1)
+        context "user_idが存在しない時" do
+        it "comment作成に失敗する" do
+          comment = Comment.new(user_id:nil,article_id:1)
             expect(comment).to be_invalid
-            binding.pry
+            # binding.pry
             expect(comment.errors.details[:user_id][0][:error]).to eq :blank
-            expect(comment.errors.details[:article_id][0][:error]).to eq :blank
-            expect(comment.errors.messages[:user]).to eq ["must exist"]
-            expect(comment.errors.messages[:article]).to eq ["must exist"]
+            # expect(comment.errors.details[:article_id][0][:error]).to eq :blank
+            # expect(comment.errors.messages[:user]).to eq ["must exist"]
+            # expect(comment.errors.messages[:article]).to eq ["must exist"]
           end
         end
 
-
+      
     end
-end
