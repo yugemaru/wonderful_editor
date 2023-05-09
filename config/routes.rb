@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
   # mount_devise_token_auth_for "User", at: "auth"
   # as :user do
-    # Define routes for User within this block.
+  # Define routes for User within this block.
   # end
 
   namespace :api do
     namespace :v1 do
-      mount_devise_token_auth_for 'User', at: 'auth'
+      mount_devise_token_auth_for "User", at: "auth"
       resources :articles, defaults: { format: :json }
-      get 'home/index'
+      get "home/index"
     end
   end
 

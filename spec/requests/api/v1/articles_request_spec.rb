@@ -1,7 +1,6 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Api::V1::Articles", type: :request do
-
   describe "GET /articles" do
     subject { get(api_v1_articles_path) }
 
