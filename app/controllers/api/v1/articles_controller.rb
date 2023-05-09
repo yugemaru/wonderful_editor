@@ -11,9 +11,11 @@ class Api::V1::ArticlesController < ApplicationController
   def show
     article = Article.find(params[:id])
     render json: @article,serializer: Api::V1::ArticleSerializer
-    # @article = Article.order(updated_at: :desc)
-    # @article.touch(:updated_at)
-    # binding.pry
+  end
+
+  def create
+    article = current_user.articles.create!(article_params)
+    render json: article, serializer: Api::V1::ArticleSerializer
   end
 
   private
