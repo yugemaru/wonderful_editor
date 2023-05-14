@@ -18,8 +18,16 @@ class Api::V1::ArticlesController < Api::V1::BaseApiController
   end
 
   def update
-    article.update!(article_params)
+    # binding.pry
+    # article = Article.find(params[:id])
+    # binding.pry
+    article = current_user.articles.find(params[:id])
+    article.update(article_params)
     render json: article, serializer: Api::V1::ArticleSerializer
+  end
+
+  def delete
+    
   end
 
   private
