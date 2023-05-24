@@ -1,14 +1,12 @@
 class Api::V1::Auth::SessionsController < DeviseTokenAuth::SessionsController
-  before_action :authenticate_api_v1_user!
+  # skip_before_action :verify_authenticity_token
 
-  # def create
-  #   binding.pry
-  #   render json: {
-  #     data: {
-  #       "access-token": "wwwww",
-  #     }
-  #   }, status: 200
-  #     render :new, status: :unprocessable_entity
-  # end
+  private
+
+  def resource_params
+    # binding.pry
+    params.require(:session).permit(:name ,:email,:password)
+    # binding.pry
+  end
 
 end
