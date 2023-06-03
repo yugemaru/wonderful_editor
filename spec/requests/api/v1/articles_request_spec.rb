@@ -109,7 +109,6 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
       it "データを削除する" do
         expect { subject }.to change { Article.count }.by(-1)
-        binding.pry
         expect(response).to have_http_status(:no_content)
       end
     end

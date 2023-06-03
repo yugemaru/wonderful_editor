@@ -10,7 +10,6 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
       it "ログインできる" do
         # subject
         res = JSON.parse(response.body)
-        binding.pry
         expect(res["data"]["name"]).to eq params[:session][:name]
         expect(res["data"]["email"]).to eq params[:session][:email]
         expect(response.header["access-token"]).to be_present
@@ -26,7 +25,6 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
       let(:other_user){ create(:user) }
       it "ログインできない"do
       subject
-      binding.pry
         res = JSON.parse(response.body)
         expect(res["errors"]).to eq ["Invalid login credentials. Please try again."]
         expect(response).to have_http_status(:unauthorized)
