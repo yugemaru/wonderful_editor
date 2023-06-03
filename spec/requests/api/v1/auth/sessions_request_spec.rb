@@ -8,7 +8,7 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
       let(:params){{session: {name: user.name, email:user.email, password:user.password }}}
       let!(:user){ create(:user)}
       it "ログインできる" do
-        # subject
+        subject
         res = JSON.parse(response.body)
         expect(res["data"]["name"]).to eq params[:session][:name]
         expect(res["data"]["email"]).to eq params[:session][:email]
