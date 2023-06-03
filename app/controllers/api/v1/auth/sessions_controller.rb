@@ -6,7 +6,6 @@ class Api::V1::Auth::SessionsController < DeviseTokenAuth::SessionsController
   def resource_params
     # binding.pry
     params.require(:session).permit(:name ,:email,:password)
-    # binding.pry
   end
 
 end

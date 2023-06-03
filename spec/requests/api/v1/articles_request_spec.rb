@@ -100,14 +100,14 @@ RSpec.describe "Api::V1::Articles", type: :request do
   describe "Delete /articles" do
     subject{ delete(api_v1_article_path(article_id)) }
 
-    let(:current_user) { create(:user) }
     let(:article_id) { article.id }
     before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+    let(:current_user) { create(:user) }
 
     context "自分が所持している記事のレコードを削除しようとするとき" do
       let!(:article) { create(:article, user: current_user) }
 
-      fit "データを削除する" do
+      it "データを削除する" do
         expect { subject }.to change { Article.count }.by(-1)
         binding.pry
         expect(response).to have_http_status(:no_content)
@@ -117,7 +117,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
     context "自分が所持していない記事のレコードを削除しようとするとき" do
       let!(:article) { create(:article, user: other_user) }
       let(:other_user) {create(:user)}
-      fit "データを削除できない" do
+      it "データを削除できない" do
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound)&
         change { Article.count }.by(0)
       end
