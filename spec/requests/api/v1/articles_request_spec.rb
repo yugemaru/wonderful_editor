@@ -80,9 +80,9 @@ RSpec.describe "Api::V1::Articles", type: :request do
     before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
     let(:current_user) { create(:user) }
 
-    it "記事のレコードを更新できる" do
+    fit "記事のレコードを更新できる" do
       # subject
-      binding.pry
+      # binding.pry
       expect { subject }.to change { article.reload.title }.from(article.title).to(params[:article][:title]) &
                           not_change { article.reload.body }
     end

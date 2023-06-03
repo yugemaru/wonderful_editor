@@ -43,7 +43,7 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
 
     context "header情報が正しくて" do
 
-      fit"ログアウトできる" do
+      it"ログアウトできる" do
         subject
         expect(user.reload.tokens).to be_blank
         expect(response).to have_http_status(:ok)
@@ -58,7 +58,7 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
         headers["expiry"] = "huga"
       }
 
-      fit "ログアウトに失敗する" do
+      it "ログアウトに失敗する" do
         subject
         # binding.pry
         res = JSON.parse(response.body)
