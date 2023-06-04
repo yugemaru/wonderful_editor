@@ -24,6 +24,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
   describe "GET /articles/:id" do
     subject { get(api_v1_article_path(article_id)) }
 
+
     context "指定した id の記事が存在する場合" do
       let(:article) { create(:article) }
       let(:article_id) { article.id }
@@ -53,14 +54,13 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
 
   describe "POST /articles" do
-    subject { post(api_v1_articles_path, params: params) }
-
+    subject { post(api_v1_articles_path, params: params,headers: headers) }
+    let!(:headers){current_user.create_new_auth_token}
     let(:params) { { article: attributes_for(:article) } }
-    # binding.pry
     let(:current_user) { create(:user) }
 
     # stub
-    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+    # before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
 
     it "記事のレコードが作成できる" do
       expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
@@ -72,17 +72,16 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe " PATCH /articles" do
-    subject{ patch(api_v1_article_path(article_id), params: params) }
+    subject{ patch(api_v1_article_path(article_id), params: params,headers: headers) }
+    let!(:headers){current_user.create_new_auth_token}
     let(:params) { { article: { title: Faker::Lorem.word } } }
     let(:article_id) { article.id }
     let(:article) { create(:article,user: current_user) }
 
-    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+    # before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
     let(:current_user) { create(:user) }
 
     fit "記事のレコードを更新できる" do
-      # subject
-      # binding.pry
       expect { subject }.to change { article.reload.title }.from(article.title).to(params[:article][:title]) &
                           not_change { article.reload.body }
     end
@@ -97,12 +96,13 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
   end
 
-  describe "Delete /articles" do
-    subject{ delete(api_v1_article_path(article_id)) }
 
+
+  describe "Delete /articles" do
+    subject{ delete(api_v1_article_path(article_id),headers: headers)}
+    let!(:headers){current_user.create_new_auth_token}
+    let(:current_user){create(:user)}
     let(:article_id) { article.id }
-    before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
-    let(:current_user) { create(:user) }
 
     context "自分が所持している記事のレコードを削除しようとするとき" do
       let!(:article) { create(:article, user: current_user) }
