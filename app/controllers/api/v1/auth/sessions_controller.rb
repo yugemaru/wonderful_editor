@@ -3,9 +3,8 @@ class Api::V1::Auth::SessionsController < DeviseTokenAuth::SessionsController
 
   private
 
-  def resource_params
-    # binding.pry
-    params.require(:session).permit(:name ,:email,:password)
-  end
-
+    def resource_params
+      # binding.pry
+      params.require(:session).permit(:name, :email, :password)
+    end
 end
