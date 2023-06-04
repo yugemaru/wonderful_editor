@@ -1,12 +1,12 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Api::V1::Auth::Sessions", type: :request do
   describe "POST/sign_in" do
-    subject {post(api_v1_user_session_path, params: params)}
+    subject { post(api_v1_user_session_path, params: params) }
 
     context "情報が正しいとき" do
-      let(:params){{session: {name: user.name, email:user.email, password:user.password }}}
-      let!(:user){ create(:user)}
+      let(:params) { { session: { name: user.name, email: user.email, password: user.password } } }
+      let!(:user) { create(:user) }
       it "ログインできる" do
         subject
         res = JSON.parse(response.body)
@@ -20,11 +20,11 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
     end
 
     context "メールアドレスが正しくない時" do
-      let(:params){{session: {name: user.name, email:other_user.email, password:user.password }}}
-      let!(:user){ create(:user)}
-      let(:other_user){ create(:user) }
-      it "ログインできない"do
-      subject
+      let(:params) { { session: { name: user.name, email: other_user.email, password: user.password } } }
+      let!(:user) { create(:user) }
+      let(:other_user) { create(:user) }
+      it "ログインできない" do
+        subject
         res = JSON.parse(response.body)
         expect(res["errors"]).to eq ["Invalid login credentials. Please try again."]
         expect(response).to have_http_status(:unauthorized)
@@ -32,16 +32,14 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
     end
   end
 
-
-
   describe "Delete/session" do
-    subject {delete(destroy_api_v1_user_session_path, headers: headers)}
-    let!(:headers){user.create_new_auth_token}
-    let(:user){create(:user)}
+    subject { delete(destroy_api_v1_user_session_path, headers: headers) }
+
+    let!(:headers) { user.create_new_auth_token }
+    let(:user) { create(:user) }
 
     context "header情報が正しくて" do
-
-      it"ログアウトできる" do
+      it "ログアウトできる" do
         subject
         expect(user.reload.tokens).to be_blank
         expect(response).to have_http_status(:ok)
@@ -49,9 +47,8 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
       end
     end
 
-
     context "header情報が誤っていて" do
-      before{
+      before {
         headers["access-token"] = "hoge"
         headers["expiry"] = "huga"
       }

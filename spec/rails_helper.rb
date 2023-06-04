@@ -21,9 +21,9 @@ Faker::Config.locale = :ja
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join("spec", "support", "**", "*.rb")].sort.each {|f| require f }
 RSpec.configure do |config|
-  config.include TestHelper #作成したヘルパーを追加
+  config.include TestHelper # 作成したヘルパーを追加
 end
 
 # Checks for pending migrations and applies them before tests are run.
