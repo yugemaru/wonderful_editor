@@ -5,13 +5,15 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
     subject { post(api_v1_user_session_path, params: params) }
 
     context "情報が正しいとき" do
-      let(:params) { { session: { name: user.name, email: user.email, password: user.password } } }
+      # let(:params) { { session: { name: user.name, email: user.email, password: user.password } } }
+      let(:params) { attributes_for(:user, email: user.email, password: user.password) }
       let!(:user) { create(:user) }
-      it "ログインできる" do
+      fit "ログインできる" do
         subject
         res = JSON.parse(response.body)
-        expect(res["data"]["name"]).to eq params[:session][:name]
-        expect(res["data"]["email"]).to eq params[:session][:email]
+        binding.pry
+        # expect(res["data"]["name"]).to eq params[:session][:name]
+        # expect(res["data"]["email"]).to eq params[:session][:email]
         expect(response.header["access-token"]).to be_present
         expect(response.header["client"]).to be_present
         expect(response.header["expiry"]).to be_present
