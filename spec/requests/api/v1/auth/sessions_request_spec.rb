@@ -8,12 +8,9 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
       # let(:params) { { session: { name: user.name, email: user.email, password: user.password } } }
       let(:params) { attributes_for(:user, email: user.email, password: user.password) }
       let!(:user) { create(:user) }
-      fit "ログインできる" do
+      it "ログインできる" do
         subject
-        res = JSON.parse(response.body)
-        binding.pry
-        # expect(res["data"]["name"]).to eq params[:session][:name]
-        # expect(res["data"]["email"]).to eq params[:session][:email]
+        # res = JSON.parse(response.body)
         expect(response.header["access-token"]).to be_present
         expect(response.header["client"]).to be_present
         expect(response.header["expiry"]).to be_present
@@ -58,7 +55,7 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
       it "ログアウトに失敗する" do
         subject
         # binding.pry
-        res = JSON.parse(response.body)
+        # res = JSON.parse(response.header)
         expect(headers["access-token"]).not_to be_blank
         expect(headers["expiry"]).not_to be_blank
         expect(headers["client"]).not_to be_blank
