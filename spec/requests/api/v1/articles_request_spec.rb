@@ -4,20 +4,33 @@ RSpec.describe "Api::V1::Articles", type: :request do
   describe "GET /articles" do
     subject { get(api_v1_articles_path) }
 
-    let!(:article1) { create(:article, updated_at: 1.days.ago) }
-    let!(:article2) { create(:article, updated_at: 2.days.ago) }
-    let!(:article3) { create(:article) }
+    context "記事作成のレコードが走ったとき" do
+      let!(:article1) { create(:article,:published, updated_at: 1.days.ago) }
+      let!(:article2) { create(:article, :published, updated_at: 2.days.ago) }
+      let!(:article3) { create(:article, :published) }
 
-    it "記事の一覧が取得できる1" do
-      subject
-      res = JSON.parse(response.body)
-
-      expect(response).to have_http_status(:ok)
-      expect(res.length).to eq 3
-      expect(res.map {|d| d["id"] }).to eq [article3.id, article1.id, article2.id]
-      expect(res[0].keys).to eq ["id", "title", "updated_at", "user"]
-      expect(res[0]["user"].keys).to eq ["id", "name", "email"]
+      it "記事の一覧が取得できる" do
+        subject
+        res = JSON.parse(response.body)
+        expect(response).to have_http_status(:ok)
+        expect(res.length).to eq 3
+        expect(res.map {|d| d["id"] }).to eq [article3.id, article1.id, article2.id]
+        expect(res[0].keys).to eq ["id", "title", "updated_at", "user"]
+        expect(res[0]["user"].keys).to eq ["id", "name", "email"]
+      end
     end
+
+    context "記事作成のレコードのstatusがdraftの時" do
+      let!(:article) { create(:article,:draft) }
+
+      it "記事の一覧が取得できない" do
+        subject
+        res = JSON.parse(response.body)
+        expect(response).to have_http_status(:ok)
+        expect(res.length).to eq 0
+      end
+    end
+
   end
 
   describe "GET /articles/:id" do
@@ -53,47 +66,78 @@ RSpec.describe "Api::V1::Articles", type: :request do
   describe "POST /articles" do
     subject { post(api_v1_articles_path, params: params, headers: headers) }
 
-    let!(:headers) { current_user.create_new_auth_token }
-    let(:params) { { article: attributes_for(:article) } }
-    let(:current_user) { create(:user) }
+    context "送信するヘッダー情報が正しくて" do
+      let!(:headers) { current_user.create_new_auth_token }
+      let(:current_user) { create(:user) }
 
-    # stub
-    # before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
+      context "paramsも正しい時" do
+        let(:params) { { article: attributes_for(:article,:published) } }
 
-    it "記事のレコードが作成できる" do
-      expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
-      res = JSON.parse(response.body)
-      expect(res["title"]).to eq params[:article][:title]
-      expect(res["body"]).to eq params[:article][:body]
-      expect(response).to have_http_status(:ok)
-    end
-  end
+        it "記事のレコードが作成できる" do
+          expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
+          res = JSON.parse(response.body)
+          expect(res["title"]).to eq params[:article][:title]
+          expect(res["body"]).to eq params[:article][:body]
+          expect(res["status"]).to eq params[:article][:status].to_s
+          expect(response).to have_http_status(:ok)
+        end
+      end
 
-  describe " PATCH /articles" do
-    subject { patch(api_v1_article_path(article_id), params: params, headers: headers) }
-
-    let!(:headers) { current_user.create_new_auth_token }
-    let(:params) { { article: { title: Faker::Lorem.word } } }
-    let(:article_id) { article.id }
-    let(:article) { create(:article, user: current_user) }
-
-    # before { allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user) }
-    let(:current_user) { create(:user) }
-
-    it "記事のレコードを更新できる" do
-      expect { subject }.to change { article.reload.title }.from(article.title).to(params[:article][:title]) &
-                            not_change { article.reload.body }
-    end
-
-    context "自分が所持していない記事のレコードを更新しようとするとき" do
-      let!(:article) { create(:article, user: other_user) }
-      let(:other_user) { create(:user) }
-
-      it "更新できない" do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      context "statusがdraftの時" do
+        let(:params) { { article: attributes_for(:article,:draft)}}
+        it "下書き状態" do
+          expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
+          res = JSON.parse(response.body)
+          expect(res["status"]).to eq params[:article][:status].to_s
+          expect(response).to have_http_status(:ok)
+        end
       end
     end
   end
+
+
+
+  describe " PATCH /articles" do
+    subject { patch(api_v1_article_path(article_id), params: params, headers: headers) }
+    let!(:headers) { current_user.create_new_auth_token }
+    let(:article_id) { article.id }
+    let(:current_user) { create(:user) }
+
+    context "titleを更新しようと思っていて" do
+      let(:params) { { article: { title: Faker::Lorem.word }} }
+      context "自分が所持している記事のレコードを更新しようとするとき" do
+        let(:article) { create(:article, user: current_user) }
+        it "記事のレコードを更新できる" do
+          expect { subject }.to change { article.reload.title }.from(article.title).to(params[:article][:title]) &
+          not_change { article.reload.body }
+        end
+      end
+
+      context "自分が所持していない記事のレコードを更新しようとするとき" do
+        let!(:article) { create(:article, user: other_user) }
+        let(:other_user) { create(:user) }
+
+        it "更新できない" do
+          expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+
+    context "statusを変更しようと思っていて" do
+      let(:params) { { article: { status: :published }} }
+      context "自分が所持している記事のレコードを更新しようとするとき" do
+        let(:article) { create(:article, user: current_user) }
+        let(:current_user) { create(:user) }
+        fit "記事のレコードを更新できる" do
+          expect { subject }.to change { article.reload.status }.from(article.status).to(params[:article][:status].to_s) &
+          not_change { article.reload.body }
+        end
+      end
+    end
+
+  end
+
+
 
   describe "Delete /articles" do
     subject { delete(api_v1_article_path(article_id), headers: headers) }
