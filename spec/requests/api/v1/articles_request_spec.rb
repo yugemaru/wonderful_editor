@@ -37,7 +37,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
     subject { get(api_v1_article_path(article_id)) }
 
     context "指定した id の記事が存在する場合" do
-      let(:article) { create(:article) }
+      let(:article) { create(:article,:published) }
       let(:article_id) { article.id }
 
       it "任意の記事の値が取得できる" do
