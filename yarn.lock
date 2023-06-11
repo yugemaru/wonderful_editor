@@ -661,9 +661,9 @@
     "@babel/helper-plugin-utils" "^7.18.6"
 
 "@babel/plugin-proposal-private-property-in-object@^7.21.0":
-  version "7.21.10"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-property-in-object/-/plugin-proposal-private-property-in-object-7.21.10.tgz#861ab9c7d152291c47d27838867f27c560f562c4"
-  integrity sha512-3YybmT8FN4sZFXp0kTr9Gbu90wAIhC3feNung+qcRQ1wALGoSHgOz1c+fR3ZLGZ0LXqIpYmtE6Faua6tMDarUg==
+  version "7.21.11"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-property-in-object/-/plugin-proposal-private-property-in-object-7.21.11.tgz#69d597086b6760c4126525cfa154f34631ff272c"
+  integrity sha512-0QZ8qP/3RLDVBwBFoWAwCtgcDZJVwA5LUJRZU8x2YFfKNuFq161wK3cuGrALu5yiPu+vzwTAg/sMWVNeWeNyaw==
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.18.6"
     "@babel/helper-create-class-features-plugin" "^7.21.0"
@@ -1738,6 +1738,11 @@
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
+
+"@fortawesome/fontawesome-free@^5.14.0":
+  version "5.14.0"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.14.0.tgz#a371e91029ebf265015e64f81bfbf7d228c9681f"
+  integrity sha512-OfdMsF+ZQgdKHP9jUbmDcRrP0eX90XXrsXIdyjLbkmSBzmMXPABB8eobUJtivaupucYaByz6WNe1PI1JuYm3qA==
 
 "@gar/promisify@^1.0.1":
   version "1.1.3"
@@ -3180,9 +3185,9 @@ caniuse-lite@^1.0.30000844:
   integrity sha512-4JIXRodHzdS3HdK8nSgIqXYLExOvG+D2/EenSvcub2Kp3QEADjo2v2oUn5g0n0D+UNwG9BtwKOyGcSq2qvQXvQ==
 
 caniuse-lite@^1.0.30001489:
-  version "1.0.30001494"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001494.tgz#3e56e04a48da7a79eae994559eb1ec02aaac862f"
-  integrity sha512-sY2B5Qyl46ZzfYDegrl8GBCzdawSLT4ThM9b9F+aDYUrAG2zCOyMbd2Tq34mS1g4ZKBfjRlzOohQMxx28x6wJg==
+  version "1.0.30001495"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001495.tgz#64a0ccef1911a9dcff647115b4430f8eff1ef2d9"
+  integrity sha512-F6x5IEuigtUfU5ZMQK2jsy5JqUUlEFRVZq8bO2a+ysq5K7jD6PPc9YXZj78xDNS3uNchesp1Jw47YXEqr+Viyg==
 
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
@@ -3997,9 +4002,9 @@ electron-to-chromium@^1.3.488:
   integrity sha512-AD6v9Y2wN0HuoRH4LwCmlSHjkKq51D1U52bTuvM5uPzisbHVm3Hms15c42TBFLewxnSqxAynK/tbeaUi4Rnjqw==
 
 electron-to-chromium@^1.4.411:
-  version "1.4.419"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.419.tgz#6fbea1f3abb65bf46e8ad874b5c1f0816ce2f8ce"
-  integrity sha512-jdie3RiEgygvDTyS2sgjq71B36q2cDSBfPlwzUyuOrfYTNoYWyBxxjGJV/HAu3A2hB0Y+HesvCVkVAFoCKwCSw==
+  version "1.4.423"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.423.tgz#99567f3a0563fe0d1d0931e9ce851bca239f6658"
+  integrity sha512-y4A7YfQcDGPAeSWM1IuoWzXpg9RY1nwHzHSwRtCSQFp9FgAVDgdWlFf0RbdWfLWQ2WUI+bddUgk5RgTjqRE6FQ==
 
 elliptic@^6.0.0, elliptic@^6.5.2:
   version "6.5.3"
